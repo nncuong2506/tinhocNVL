@@ -1,0 +1,66 @@
+#computerScreen {
+      width: 700px;
+      height: 400px;
+      background: #111;
+      color: white;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      margin: 20px auto;
+      overflow: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    }
+    #desktop {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 10px;
+      justify-content: flex-start;
+    }
+    .folder, .file {
+      background: rgba(255,255,255,0.05);
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      width: 100px;
+      color: white;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+    .folder:hover, .file:hover { background: rgba(255,255,255,0.15); }
+    .folder img, .file img {
+      width: 48px;
+      height: 48px;
+      display: block;
+      margin: 0 auto 5px;
+      pointer-events: none;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    button {
+      background: #0078d4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+    button:hover { background: #005fa3; }
+    #screenOff {
+      position: absolute;
+      inset: 0;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: lime;
+      border-radius: 10px;
+      z-index: 10;
+    }

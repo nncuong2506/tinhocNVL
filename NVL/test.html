@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mô phỏng máy tính</title>
+<style>
+  body {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: sans-serif;
+    user-select: none;
+  }
+  #computer {
+    width: 700px;
+    height: 450px;
+    background-color: #1a1a1a;
+    border: 5px solid #555;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    display: none;
+  }
+  #screen {
+    background-color: #2b2b2b;
+    width: 100%;
+    height: 100%;
+    color: white;
+    position: relative;
+  }
+  .folder {
+    width: 80px;
+    height: 80px;
+    background-color: #e5b400;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    color: black;
+    position: absolute;
+  }
+  .folder-name {
+    margin-top: 60px;
+    font-size: 13px;
+  }
+  #power-btn {
+    background-color: limegreen;
+    color: white;
+    font-size: 18px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  #controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+  }
+  #create-folder {
+    background: dodgerblue;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  #folder-window {
+    position: absolute;
+    top: 80px;
+    left: 100px;
+    width: 300px;
+    height: 200px;
+    background-color: #333;
+    border: 2px solid white;
+    display: none;
+    padding: 10px;
+  }
+  #delete-btn {
+    background: red;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<button id="power-btn">Bật máy</button>
+
+<div id="computer">
+  <div id="screen">
+    <div id="controls">
+      <button id="create-folder">+ Tạo thư mục</button>
+    </div>
+
+    <div class="folder" style="top:100px;left:80px;">
+      <div class="folder-name">Thư mục 1</div>
+    </div>
+    <div class="folder" style="top:100px;left:200px;">
+      <div class="folder-name">Thư mục 2</div>
+    </div>
+
+    <div id="folder-window">
+      <p>📁 Đang mở thư mục...</p>
+      <button id="delete-btn">Xóa thư mục này</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const powerBtn = document.getElementById('power-btn');
+  const computer = document.getElementById('computer');
+  const createBtn = document.getElementById('create-folder');
+  const folderWindow = document.getElementById('folder-window');
+  const deleteBtn = document.getElementById('delete-btn');
+  const screen = document.getElementById('screen');
+  let folderCount = 2;
+  let currentFolder = null;
+
+  // Bật máy
+  powerBtn.addEventListener('click', () => {
+    powerBtn.style.display = 'none';
+    computer.style.display = 'block';
+  });
+
+  // Tạo thư mục mới
+  createBtn.addEventListener('click', () => {
+    folderCount++;
+    const newFolder = document.createElement('div');
+    newFolder.classList.add('folder');
+    newFolder.style.top = `${100 + Math.random() * 200}px`;
+    newFolder.style.left = `${100 + Math.random() * 300}px`;
+    newFolder.innerHTML = `<div class="folder-name">Thư mục ${folderCount}</div>`;
+    screen.appendChild(newFolder);
+    makeFolderInteractive(newFolder);
+  });
+
+  // Xóa thư mục
+  deleteBtn.addEventListener('click', () => {
+    if (currentFolder) {
+      currentFolder.remove();
+      folderWindow.style.display = 'none';
+      alert('Đã xóa thư mục.');
+    }
+  });
+
+  // Tính năng click và kéo thư mục
+  function makeFolderInteractive(folder) {
+    folder.addEventListener('click', () => {
+      currentFolder = folder;
+      folderWindow.style.display = 'block';
+    });
+
+    // Kéo thả bằng chuột
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    folder.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      offsetX = e.offsetX;
+      offsetY = e.offsetY;
+      folder.style.zIndex = 100;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        const rect = screen.getBoundingClientRect();
+        folder.style.left = (e.clientX - rect.left - offsetX) + 'px';
+        folder.style.top = (e.clientY - rect.top - offsetY) + 'px';
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      folder.style.zIndex = '';
+    });
+  }
+
+  // Gán sự kiện cho thư mục có sẵn
+  document.querySelectorAll('.folder').forEach(makeFolderInteractive);
+</script>
+
+</body>
+</html>
