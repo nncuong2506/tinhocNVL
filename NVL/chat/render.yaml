@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: tinhocnvl-api
+    name: tinhocnvl-chat-api
     env: python
     buildCommand: ""
-    startCommand: gunicorn app:app
+    startCommand: gunicorn NVL.chat.app:app
